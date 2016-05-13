@@ -1,11 +1,13 @@
 #ifndef MARKOV_TEXT_PREFIXTREE
 #define MARKOV_TEXT_PREFIXTREE
 
+#include <stdlib.h>
+#include <string.h>
+
 struct word;
 struct related_word;
 struct prefix_tree;
 struct prefix_tree_list;
-struct related_word_list;
 
 typedef struct related_word {
 	int count;
@@ -17,7 +19,7 @@ typedef struct word {
 	int number_related_words;
 	int related_words_total_count;
 	char* word_text;
-	related_word_list* related_words;
+	related_word* related_words;
 } word;
 
 typedef struct prefix_tree_list {
