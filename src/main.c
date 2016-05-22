@@ -13,7 +13,7 @@ char file_name[FILE_NAME_MAX_SIZE];
 
 int main(int, char**);
 
-extern word global_last_word; //prefixtree.h
+extern word* global_last_word; //prefixtree.h
 prefix_tree* global_prefix_tree;
 
 int main( int argc, char** argv )
@@ -47,7 +47,7 @@ int main( int argc, char** argv )
 	 * Generate new text based on global_prefix_tree
 	 */
 
-        generate_text(NUMBER_OF_SENTENCES_TO_GENERATE, global_prefix_tree);
+        generate_text(NUMBER_SENTENCES_TO_GENERATE, global_prefix_tree);
 		
 	
 	//free global_prefix_tree

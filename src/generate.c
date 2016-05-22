@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "../inc/error.h"
+#include "../inc/prefixtree.h"
 #include "../inc/generate.h"
 
 
@@ -8,8 +9,7 @@ prefix_tree* build_prefix_tree(FILE* input)
 {
 	char file_contents[FILE_CHUNK_SIZE];
 	char word[WORD_MAX_LENGTH] = {};
-        prefix_tree* pt = (prefix_tree*) malloc(sizeof(prefix_tree));
-        MALLOC_RETURN_CHECK(prefix_tree);
+        prefix_tree* pt = new_prefix_tree();
 
         /*pt->next_words = (prefix_tree_list*) malloc(sizeof(prefix_tree_list));
         MALLOC_RETURN_CHECK(pt->next_words);
@@ -31,9 +31,9 @@ prefix_tree* build_prefix_tree(FILE* input)
 			    file_contents[j] == '\t' ||
 			    file_contents[j] == ',')
 			{ j++; word[i] = 0;
-                                for( file_contents[j] == ' ' ||
-                                             file_contents[j] == '\t' ||
-                                             file_contents[j] == '\n' &&
+                                for( ; (file_contents[j] == ' ' ||
+					file_contents[j] == '\t' ||
+					file_contents[j] == '\n') &&
                                              (j < WORD_MAX_LENGTH); ++j ) {} //this may need extra handling if j passes WORD_MAX_LENGTH
                                 
                                            
@@ -85,7 +85,7 @@ char* generate_text(int number_of_sentences, prefix_tree* pt)
 	int number_sentences = 0;
 
 	//until start symbol implemented, start each text with 'the'
-	word* current_word = find_word(&global_prefix_tree, "the");
+	word* current_word = find_word(pt, "the");
 	/*** Code to be removed: ***/
 	if( current_word == NULL )
 	{
@@ -113,8 +113,9 @@ char* generate_text(int number_of_sentences, prefix_tree* pt)
                 if( output_counter > (output_multiplier * TEXT_CHUNK_SIZE ) )
                         {
                                 output_multiplier++;
-                                realloc( output,
-                                         (output_multiplier * TEXT_CHUNK_SIZE) );
+                                output = realloc( output,
+						  (output_multiplier
+						   * TEXT_CHUNK_SIZE) );
                                 MALLOC_RETURN_CHECK( output );
                         }
                 
@@ -123,4 +124,5 @@ char* generate_text(int number_of_sentences, prefix_tree* pt)
 		//if ...->word_text is '.', '!', or '?'
 		//     number_sentences++
         }
+	return output;
 }

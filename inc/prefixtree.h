@@ -33,9 +33,16 @@ typedef struct prefix_tree {
 	word* found_word;
 } prefix_tree;
 
-word global_last_word;
+word* global_last_word;
 
 void update_prefix_tree( prefix_tree*, char* );
 __attribute__ ((pure)) word* find_word( prefix_tree*, char* );
+__attribute__((pure)) prefix_tree* find_closest_word( prefix_tree*, char* );
+
+related_word*     new_related_word(void);
+word*             new_word(char*);
+word*             new_blank_word(void);
+prefix_tree_list* new_prefix_tree_list(void);
+prefix_tree*      new_prefix_tree(void);
 
 #endif

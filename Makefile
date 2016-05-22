@@ -3,6 +3,10 @@ LIBS =
 CC = gcc
 CFLAGS = -g -Wall
 
+srcdir = src/
+incdir = inc/
+builddir = build/
+
 .PHONY: clean all default
 
 HEADERS = prefixtree.h error.h
@@ -11,14 +15,14 @@ OBJECTS = main.o prefixtree.o error.o
 default: $(TARGET)
 all: default
 
-%.o: %.c $(HEADERS)
-	$(CC) $(CFLAGS) -c $< -o $@
+%.o: %.c $(incdir)$(HEADERS)
+	$(CC) $(CFLAGS) -c $(srcdir)$< -o $(builddir)$@
 
-.PRECIOUS: $(TARGET) $(OBJECTS)
+.PRECIOUS: $(TARGET) $(builddir)$(OBJECTS)
 
-$(TARGET): $(OBJECTS)
-	$(CC) $(OBJECTS) $(CFLAGS) $(LIBS) -o $@
+$(TARGET): $(builddir)$(OBJECTS)
+	$(CC) $(builddir)$(OBJECTS) $(CFLAGS) $(LIBS) -o $(builddir)$@
 
 clean:
-	-rm -f *.o
+	-rm -f $(builddir)*.o
 	-rm -f $(TARGET)
